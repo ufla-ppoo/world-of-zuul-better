@@ -5,5 +5,4 @@ Este jogo foi criado por Michael Kölling e David J. Barnes, no livro *Programa�
 
 O código deste projeto foi traduzido e adaptado para uso nas aulas de Programação Orientada a Objetos da UFLA.
 
-Este é um projeto inicial utilizado nas aulas de Design de Classe.
-Ao longo das aulas os alunos alteram o código resolvendo escolhas ruins de design, e depois melhoram o jogo acrescentando novas funcionalidades.
+Este é um projeto melhorado, utilizado nas aulas de Design de Classe. Ele é resultado de alterações no projeto original [world-of-zuul-bad](https://github.com/ufla-ppoo/world-of-zuul-bad).
