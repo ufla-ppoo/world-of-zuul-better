@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Esta classe é parte da aplicação "World of Zuul".
  * "World of Zuul" é um jogo de aventura muito simples, baseado em texto.  
@@ -25,5 +27,18 @@ public class PalavrasComando {
         }
         // se chegamos aqui, a string não foi encontrada nos comandos.
         return false;
+    }
+
+    /**
+     * Retorna os comandos válidos do jogo
+     * 
+     * @return Uma lista de strings que representam os comandos válidos do jogo
+     */
+    public ArrayList<String> getComandosValidos() {
+        ArrayList<String> comandos = new ArrayList<>();
+        for (String comando : comandosValidos) {
+            comandos.add(comando);
+        }
+        return comandos;
     }
 }

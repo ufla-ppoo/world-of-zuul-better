@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -64,5 +65,14 @@ public class Analisador  {
         else {
             return new Comando(null, palavra2); 
         }
+    }
+
+    /**
+     * Retorna os comandos válidos do jogo
+     * 
+     * @return Uma lista de strings que representam os comandos válidos do jogo
+     */
+    public ArrayList<String> getComandosValidos() {
+        return palavrasDeComando.getComandosValidos();
     }
 }
