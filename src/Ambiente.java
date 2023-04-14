@@ -62,7 +62,7 @@ public class Ambiente  {
      * 
      * @return Texto com as saídas
      */
-    public String textoSaidasDisponiveis() {
+    public String direcoesDeSaida() {
         String texto = "";
         for (String direcao : saidas.keySet()) {
             texto += direcao + " ";

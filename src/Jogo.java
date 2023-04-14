@@ -155,7 +155,7 @@ public class Jogo {
     private void imprimirLocalizacaoAtual() {
     	System.out.println("Voce esta " + ambienteAtual.getDescricao());
         
-        System.out.print("Saidas: " + ambienteAtual.textoSaidasDisponiveis());
+        System.out.print("Saidas: " + ambienteAtual.direcoesDeSaida());
         System.out.println();
     }
 
