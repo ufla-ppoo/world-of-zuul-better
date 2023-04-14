@@ -1,4 +1,4 @@
-## Projeto World of Zuul Bad
+## Projeto World of Zuul Better
 
 **World of Zuul** é um jogo de aventura muito simples, baseado em texto.
 Este jogo foi criado por Michael Kölling e David J. Barnes, no livro *Programação Orientada a Objetos com Java: Uma Introdução Prática Usando o BlueJ*.
