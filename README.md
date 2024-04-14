@@ -29,35 +29,65 @@ Depois, no computador você deve alterar o código do **World of Zuul** da segui
 - Alterar o método `criarAmbientes` para criar o mapa que você planejou para seu jogo.
 - Teste seu jogo (por enquanto o jogador conseguirá apenas se movimentar no mapa).
 
-### Passo 2 - Criando itens nos ambientes
+### Passo 2 - Incluindo itens: criando classe
 
 Nosso jogo por enquanto não permite fazer muita coisa.
 Mas, e se quiséssemos acrescentar itens que os jogadores pudessem coletar e usar?
 
-Vamos neste passo permitir que nossos ambientes possuam itens.
-Para isso, faça o seguinte:
+Neste passo, vamos começar implementando a primeira etapa dessa alteração que é criar itens que estejam em algum ambiente do jogo. 
 
-- Crie uma classe para representar itens:
+O primeiro passo para isso é ter uma classe para representar os itens.
 
-  - Com os atributos: nome e descrição.
-  - Os ítens que podem existir no seu jogo vão depender muito da temática que você escolheu. Logo, a classe não precisa se chamar `Item`; ela deve ter o nome que faça sentido pra você.
+- Os itens que podem existir no seu jogo vão depender muito da temática que você escolheu. 
 
-- Altere a classe `Ambiente` para que ela tenha:
+  - Logo, a classe não precisa se chamar `Item`; ela deve ter o nome que faça sentido pra você (ex.: arma, alimento, artefato, etc.).
 
-  - Um atributo item.
-  - Um segundo construtor que receba um item.
-  - Um método que retorna um booleano indicando se o ambiente tem um item.
-  - E altere o método `getDescricaoLonga` para incluir a informação sobre o item do ambiente, caso exista.
+- A classe deve ter, pelo menos, os atributos: nome e descrição.
 
-- Altere a classe `Jogo`:
+  - Crie um construtor que define os atributos e métodos de acesso para cada um.
 
-  - Altere a criação de ambientes para que pelo menos dois deles tenham algum item.
-  - Os itens precisam ser diferentes em cada ambiente.
-  - O jogo pode ficar mais interessante se o método `irParaAmbiente` exibir apenas a descrição do novo ambiente (e não a descrição longa). Isso fará com que o comando *observar* seja mais útil.
+### Passo 3 - Incluindo itens nos ambientes
+
+Altere a classe `Ambiente` de forma que ela agora tenha:
+
+- Um atributo item.
+- Um segundo construtor que receba um item.
+- Um método que retorna um booleano indicando se o ambiente tem um item.
+
+Por fim, altere o método `getDescricaoLonga` para incluir a informação sobre o item do ambiente, caso exista.
+
+- Por exemplo, se houver um item a mensagem poderia ser, por exemplo:
+  
+  - `Há um livro antigo e misterioso por aqui`.
+  - Obs.: o trecho `um livro antigo e misterioso` seria a descrição do item.
+
+- Se não houver item, a mensagem poderia ser:
+
+  - `Não há nada aqui`.
+
+### Passo 4 - Incluindo itens no jogo
+
+Para que a inclusão dos itens fique completa no jogo, precisamos criar itens que sejam acrescentados nos ambientes.
+
+Altere então a classe `Jogo` da seguinte forma::
+
+- Altere o método `criarAmbientes` criando pelo menos dois objetos itens.
+
+  - *Dica 1*: use descrições criativas para os itens. Por ex.: “um livro misterioso, com folhas amareladas e cheirando a mofo” deixa o jogo muito mais interessante do que simplesmente “um livro”.
+
+  - *Dica 2*: use dois itens diferentes para deixar o jogo mais interessante. Por ex.: um livro e uma chave é mais interessante que dois livros.
+
+Altere a criação dos ambientes para que os itens criados sejam colocados nos ambientes onde devem estar (use o segundo construtor que criou na classe `Ambiente`).
+
+*Sugestão*: 
+
+- o jogo pode ficar mais interessante para o jogador se o método `irParaAmbiente` agora exibir apenas a descrição simples do novo ambiente (e não a descrição longa).
+- Isso fará com que o comando *observar* se torne mais útil, pois ele representaria a ação do jogador estar ativamente procurando alguma coisa.
+- Assim, um jogador pode passar por um ambiente e não perceber que há um item lá, por exemplo.
 
 Não se esqueça de testar o seu jogo com as alterações feitas!
 
-### Passo 3 - Coletando itens
+### Passo 5 - Coletando itens
 
 Vamos agora alterar nosso jogo para que o jogador consiga pegar um item do ambiente.
 Para isso:
@@ -67,112 +97,159 @@ Para isso:
 - Crie dois métodos na classe `Ambiente`:
 
   - Um para consultar o item existente (retorna `null` se não houver item).
-  - Outro para coletar o item do ambiente, ou seja, ele deve deixar o atributo item do ambiente com valor `null` e retornar o item (dica: use uma variável auxiliar).
+  - Outro para coletar o item do ambiente, ou seja, ele deve deixar o atributo item do ambiente com valor `null` e retornar o item (*dica*: use uma variável auxiliar).
 
-- Trate a palavra de comando *pegar* na classe Jogo.
+- Trate a palavra de comando **`pegar`** na classe `Jogo`.
 
-  - Se o usuário digitar apenas *pegar*, dê uma mensagem apropriada (ex: *Pegar o que?*).
+  - Se o usuário digitar apenas `pegar`, dê uma mensagem apropriada (ex: `Pegar o que?`).
   - Se o usuário digitar o nome do item que está no ambiente:
+  
     - O item deve ser coletado do ambiente, e uma mensagem deve ser exibida dizendo que o usuário pegou tal item.
     - Obs: por enquanto não é necessário guardar o item que o jogador pegou.
+  
   - Se o item não estiver no ambiente (ou for uma palavra que não existe):
+  
     - Deve ser exibida uma mensagem indicando que não há esse item no ambiente.
 
 Teste suas alterações!
 
-### Passo 4 - Carregando itens
+### Passo 6 - Carregando itens: refatorando - classe para Jogador
 
 Vamos agora permitir que o jogador carregue itens que depois possam ser usados em outros lugares  para realizar ações (tais como: abrir portas, desbloquear passagens, destruir monstros, etc).
-Nosso código fica melhor se o **refatorarmos**, criando uma classe para representar o jogador.
 
-Para isso, faça o seguinte:
+Veja que até agora o jogador não tem uma representação no jogo.
+Ele apenas se move entre os ambientes e pega itens e, por isso, a classe `Jogo` é que guarda a localização atual do jogador.
 
-- Crie uma classe para representar o jogador:
+Mas agora, além da localização atual, teremos uma coleção de itens que o jogador está carregando.
+Logo, incluir essa informação na classe `Jogo` diminui sua coesão, pois ela representará a lógica do jogo **e** o jogador.
 
-  - Dê um nome para a classe que tenha a ver o tema do seu jogo.
-  - Um jogador deve ter um nome e uma lista de itens que estão sendo carregados.
-    - Poderia ser uma mochila ou algo que faça sentido com o tema do seu jogo.
-  - Crie o construtor que recebe o nome do jogador e cria a lista de itens vazia.
-  - Crie um método para retornar o nome do jogador.
-  - Crie um método para adicionar um item na lista do jogador.
-  - Crie um método que, a partir do nome do ítem, remove-o da lista do jogador e o retorne.
-  - Crie um método que retorne uma única string informando todos os itens que o jogador está carregando.
+Vamos então **refatorar** nosso código, criando uma classe para representar o jogador.
 
-- Crie um atributo jogador na classe `Jogo` e o inicialize adequadamente.
+- Dê um nome para a classe que tenha a ver o tema do seu jogo.
 
-- Altere o tratamento do comando *pegar* na classe `Jogo`.
+A classe deve ter:
 
-  - Quando o jogador pegar um item que está no ambiente, esse item deve ser adicionado na lista de itens do jogador.
+- Uma coleção (ArrayList ou HashMap, por ex.) de itens que estão sendo carregados.
 
-- Crie e trate um novo comando *inventario* exiba os itens que estão sendo carregados pelo jogador.
+  - Poderia ser uma mochila ou algo que faça sentido com o tema do seu jogo.
+
+- O ambiente (localização) atual do jogador.
+
+  - Além disso, pode ter atributos adicionais que façam sentido no seu jogo (ex.: nome).
+
+- Um construtor que cria a coleção de itens vazia (e recebe parâmetros adicionais, se necessário, como o nome).
+
+- Método de acesso para atributos como o ambiente atual (mas não para os itens).
+
+- Método para adicionar um item na coleção do jogador.
+
+- Método para remover um item da coleção a partir de seu nome.
+
+- Método que monte e retorne uma string informando todos os itens que o jogador está carregando no momento.
+
+### Passo 7 - Carregando itens no jogo
+
+Faça as alterações necessárias na classe `Jogo` para utilizar a classe que representa o jogador.
+Dentre as alterações você precisará:
+
+- Declarar um atributo para representar o jogador na classe `Jogo` e criá-lo no construtor da classe.
+
+- Remover o atributo `ambienteAtual` e fazer as alterações necessárias para usá-lo a partir da classe do jogador.
+
+- Alterar o tratamento do comando `pegar` para que, quando o jogador pegar um item que estava em um ambiente, esse item seja adicionado na coleção de itens do jogador.
+
+Teste o seu jogo!
+
+### Passo 8 - Listando itens
+
+Para que depois o jogador consiga usar os itens que está carregando, ele precisará ter uma forma de ver e lembrar os nomes dos itens que estão com ele.
+
+Neste passo, crie e faça os tratamentos necessários para que o jogo tenha uma nova palavra de comando que permita ao jogador ver os itens que ele está carregando.
+
+O nome da palavra de comando deve ter a ver com o tema do seu jogo (poderia ser, por exemplo, `inventario` ou  `listar_itens`).
 
 Jogue e teste suas alterações!
 
-### Passo 5 - Bloqueando ambientes
+### Passo 9 - Bloqueando ambientes: classe Saida
 
-Vamos tratar neste passo o bloqueio dos ambientes de uma forma bem simples.
-A ideia é que apenas uma das saídas de um ambiente possa estar bloqueada (ou nenhuma delas).
+Vamos tratar neste passo o bloqueio dos ambientes.
+Um bloqueio poderia ser, por exemplo, uma porta fechada que precisa de uma chave para ser aberta ou saída da caverna cheia de pedras que precisará de explosivos para ser liberada.
 
-Para isso faça as seguintes alterações na classe `Ambiente`:
+Repare que agora, a saída de um ambiente não deve ter apenas a informação do próximo ambiente, mas também a indicação se a saída está bloqueada ou não e a identificação do item capaz de desbloquear a saída.
+Portanto, o ideal é que façamos uma nova refatoração.
 
-- Crie um atributo string que indique qual saída (direção) está bloqueada.
+Vamos então refatorar nosso projeto criando uma classe para representar uma saída de um ambiente. 
+A classe `Saida` deve ter:
 
-  - Se o atributo tiver valor `null`, indicará que não há nenhuma saída bloqueada.
+- Os atributos: ambiente para onde a saída leva, booleano indicando se ela está bloqueada ou não, e String com o nome do item que desbloqueia a saída (caso ela esteja bloqueada).
 
-- Crie um atributo string que indique o nome do item que desbloqueia a saída bloqueada.
+- Construtor que recebe os valores dos atributos e métodos de acesso para cada um.
 
-  - O atributo terá valor `null` se o ambiente não tiver nenhuma saída bloqueada.
+A classe `Ambiente` deve então ser alterada de forma que a coleção de saídas seja agora de objetos da classe `Saida` (em vez de ser uma coleção de ambientes como estava até então).
 
-- Crie um método chamado `ajustarSaidaBloqueada` que recebe uma direção, um ambiente e um nome de item de desbloqueio.
+- O método `ajustarSaida` será usado para definir saídas que não estão bloqueadas. Ele deve ser alterado para criar uma um objeto para saída desbloqueada (com valor `null` para o item que desbloqueia a saída) e deve colocá-la na coleção de saídas.
 
-  - Tal método chamará o `ajustarSaida` para a direção e o ambiente e, em seguida, guardará a direção passada como a saída bloqueada e o nome do item passado como o item para desbloqueio.
+- Crie um novo método `ajustarSaidaBloqueada`, que receba, além da direção e do ambiente, o nome do item que desbloqueia a saída. O método deve então criar um objeto para saída bloqueada com o nome do item recebido e colocá-lo na coleção de saídas.
 
-- O método `getSaida` deve ser alterado de forma que:
+- Por fim, o método `getSaida` deve ser alterado de forma que ele retorne o ambiente da saída, caso ela exista e esteja desbloqueada. Caso contrário, deve retornar `null`.
 
-  - Se a direção passada for de uma saída bloqueada, retorne `null` (isso impedirá que o jogador passe por aquela saída).
-  - Se for para uma saída não bloqueada, retorne o ambiente como já fazia antes.
+### Passo 10 - Bloqueando ambientes no jogo
 
-Em seguida, na criação dos ambientes na classe `Jogo`, bloqueie uma das saídas.
+Agora que a classe `Ambiente` permite a definição de saídas bloqueadas, altere a criação de ambientes na classe `Jogo` de forma que pelo menos um ambiente tenha uma saída bloqueada.
 
-- Ou seja, substitua alguma chamada ao método `ajustarSaida` de algum ambiente por uma chamada ao método `ajustarSaidaBloqueada`, indicando o nome do item de desbloqueio.
-
-Se tudo estiver certo você não conseguirá passar pela saída bloqueada.
-No próximo passo veremos como usar um item para desbloquear a saída.
+- Veja que, para isso, basta substituir alguma chamada ao método `ajustarSaida` de algum ambiente por uma chamada ao método `ajustarSaidaBloqueada`, indicando o nome do item que desbloqueia a saída.
 
 Teste seu jogo!
 
-### Passo 6 - Usando os itens
+- Se tudo estiver certo, quando você tentar passar pela saída bloqueada, o jogo informará que não há passagem.
 
-Agora vamos realmente tornar os itens úteis, usando-os para desbloquear as saídas dos ambientes.
-A ideia é que o jogador possa digitar um comando *usar algo*, onde *algo* é o nome de um item que ele está carregando e que será usado no ambiente.
-Se o item for usado em um ambiente com saída bloqueada, e for o item que desbloqueia aquela saída, a mesma será desbloqueada.
+### Passo 11 - Desbloqueando saídas
 
-Para isso faça as seguintes alterações no código:
+Nós estamos quase no ponto de ter o jogo com algum tipo de missão que o jogador possa cumprir para ganhar o jogo.
 
-- Crie o comando *usar* na classe `PalavrasComando`.
+- Veja que agora nosso jogo tem itens que o jogador consegue carregar e tem ambientes com saídas bloqueadas.
 
-- Na classe `Ambiente`, crie um método que permita ao jogador usar um item.
+- Vamos então permitir que o jogador use algum item para desbloquear as saídas.
 
-  - Tal método deve receber, por parâmetro, **o objeto** item a ser utilizado (atenção: deve receber um objeto item, e não apenas o nome do item).
-  - Se o item recebido tem o mesmo nome do item para desbloqueio, o atributo de saída bloqueada recebe o valor `null`.
-  - O método deve retornar um booleano indicando se uma saída foi desbloqueada ou não.
+A ideia é que o jogador possa digitar um comando `usar algo`, onde `algo` é o nome de um item que ele está carregando e que será usado no ambiente.
 
-- Na classe que representa o jogador, crie um método que recebe uma string com o nome de um item e retorne se o jogador tem aquele item.
+- Se o item for usado em um ambiente com saída bloqueada, e for o item que desbloqueia aquela saída, a mesma será desbloqueada.
 
-- Faça o tratamento do comando *usar* na classe `Jogo`:
 
-  - Se o usuário não digitar o nome do item a ser usado dê uma mensagem apropriada.
-  - Se o usuário digitar o nome de um item:
-    - Que o jogador não tem: informe o usuário.
-    - Que o jogador tem: chame o método de usar o item da classe `Ambiente` e, caso uma saída tenha sido desbloqueada, remova o item da lista de itens do jogador.
-    - Dê uma mensagem apropriada para o usuário caso ele tenha desbloqueado a passagem.
+Como primeiro passa para tratarmos isso, altere a classe `Saida`, acrescentando um método modificador chamado `desbloquear`, que altera o atributo booleano para false.
 
-- Na criação dos ambientes na classe `Jogo`, configure os ambientes de forma que o jogador tenha que ir em um ambiente pegar um item, para desbloquear a saída de algum outro ambiente.
+Na classe `Ambiente`, crie um método `usarItem` (ou nome similar de acordo com o tema do seu jogo).
 
-Teste seu jogo!
-Você deve agora conseguir desbloquear a passagem que o jogador não tinha acesso :)
+- Ele deve receber, por parâmetro, o objeto item a ser utilizado (**atenção**: deve receber um objeto item, e não apenas o nome do item).
 
-### (Opcional) Passo 7 - Zerando o jogo
+- Se a coleção de saídas tiver alguma saída cujo nome do item de desbloqueio seja o do item passado, a saída deve ser desbloqueada.
+
+- O método deve retornar um booleano indicando se alguma saída foi desbloqueada ou não.
+
+### Passo 12 - Usando itens para desbloquear saídas
+
+
+Na classe que representa o jogador, crie um método que recebe uma string com o nome de um item e retorne se o jogador tem aquele item.
+
+Crie uma nova palavra de comando **`usar`** e faça o tratamento do comando na classe Jogo:
+
+- Se o usuário digitar apenas `usar` avise-o que é necessário informar o que quer usar.
+
+- Se o usuário digitar o nome de um item (ex: `usar algo`):
+  
+  - Se o jogador não tiver o item: informe o usuário.
+
+  - Se o jogador tiver o item: chame o método de usar o item da classe `Ambiente`.
+
+    - Se uma saída tiver sido desbloqueada: remova o item da coleção de itens do jogador e avise o usuário que uma saída foi desbloqueada.
+
+    - Se nenhuma saída tiver sido desbloqueada: avise ao usuário que isso aconteceu e não remova o item da coleção do jogador.
+
+Na criação dos ambientes na classe `Jogo`, configure os ambientes de forma que o jogador tenha que ir em um ambiente pegar um item, para desbloquear a saída de algum outro ambiente.
+
+Teste seu jogo! Agora há uma missão a cumprir!
+
+### (Opcional) Passo 13 - Zerando o jogo
 
 Agora nosso jogo permite que o jogador não só caminhe entre os ambientes, como também pegue itens e desbloqueie passagens.
 Podemos então definir uma forma do jogador *zerar* o jogo.
@@ -188,21 +265,33 @@ Algumas ideias de objetivo são:
 - Criar um item especial a ser conquistado pelo jogador.
 - Enfim, alguma coisa que represente que o jogador conseguiu *finalizar* o jogo.
 
-### (Opcional) Passo 8 - Ideias para melhorar seu jogo
+### (Opcional) Passo 14 - Ideias para melhorar seu jogo
 
 Nós agora temos um jogo mais divertido que o **World of Zuul**, o que é muito bacana :)
 
 Mas com criatividade você pode fazer muito mais!
 Veja alguns exemplos abaixo *(obs.: se você fizer algum desses passos, coloque um comentário no cabeçalho da classe Jogo, indicando o que você fez)*.
 
-- Adicione alguma forma de limite de tempo ao seu jogo, e se o jogador não chegar no objetivo dentro do tempo, ele perde. O tempo não precisa ser real, pode ser o número de movimentos ou de comandos inseridos, por exemplo.
-- Implemente uma porta secreta em algum lugar (ou alguma outra forma de porta que você só possa cruzar uma vez).
-- Adicione um *beamer* ao seu jogo. O beamer memoriza o ambiente onde ele é iniciado e teletransporta o jogador para aquele ambiente quando ele é disparado. Para isso, você precisará tratar os comandos para *iniciar* e *disparar* o beamer. E o beamer em si poderia ser um item a ser encontrado pelo jogador.
-- Adicione personagens ao jogo. Eles são parecidos com os itens, mas quando o jogador encontra um personagem pela primeira vez ele diz alguma coisa (pode ser uma dica que ajude o jogador, por exemplo).
-- Adicione personagens que se movem. Eles são como os personagens comuns, mas toda vez que o jogador digita um comando, o personagem se move para um dos ambientes vizinhos.
-- Crie um sistema de pontuação que motive o jogador. Ele poderia ganhar pontos ao pegar itens especiais (estrelas ou moedas, por exemplo), ou ao desbloquear passagens, etc.
-- Crie inimigos e coloque-os nos ambientes. Crie então armas que podem ser coletadas e usadas para derrotar inimigos.
-- Crie um limite de peso para a mochila jogador de forma que ele não consiga carregar todos os itens. Para isso, permita que os ambientes tenham uma lista de itens e não apenas um. Além disso, será necessário permitir que o usuário largue itens nos ambientes.
-- Permita que os ambientes tenham mais saídas bloqueadas e não apenas uma. Uma boa solução seria criar uma classe para representar as saídas, assim você mantém a coesão no código.
+- Adicione **personagens** ao jogo. Eles são parecidos com os itens, mas quando o jogador encontra um personagem pela primeira vez ele diz alguma coisa (pode ser uma dica que ajude o jogador, por exemplo).
+
+- Adicione alguma forma de **limite de tempo** ao seu jogo, e se o jogador não chegar no objetivo dentro do tempo, ele perde. O tempo não precisa ser real, pode ser o número de movimentos ou de comandos inseridos, por exemplo.
+
+- Crie um **sistema de pontuação** que motive o jogador. Ele poderia ganhar pontos ao pegar itens especiais (estrelas ou moedas, por exemplo), ou ao desbloquear passagens, etc.
+
+- Crie **inimigos** e coloque-os nos ambientes. 
+
+  - Inimigos podem atacar o jogador que pode sofrer dano e até morrer.
+  
+  - Crie então armas que podem ser coletadas e usadas para derrotar inimigos.
+
+  - Crie também itens que possam ser usados para melhorar a saúde do jogador.
+
+- Adicione **personagens que se movem**. Eles são como os personagens comuns, mas toda vez que o jogador digita um comando, o personagem se move para um dos ambientes vizinhos.
+
+- Implemente uma **porta secreta** em algum lugar (ou alguma outra forma de porta que você só possa cruzar uma vez).
+
+- Adicione um ***beamer*** ao seu jogo. O beamer memoriza o ambiente onde ele é iniciado e teletransporta o jogador para aquele ambiente quando ele é disparado. Para isso, você precisará tratar os comandos para *iniciar* e *disparar* o beamer. E o beamer em si poderia ser um item a ser encontrado pelo jogador.
+
+- Crie um **limite de peso** para a mochila jogador de forma que ele não consiga carregar todos os itens. Para isso, permita que os ambientes tenham uma lista de itens e não apenas um. Além disso, será necessário permitir que o usuário largue itens nos ambientes.
 
 Enfim, agora sua criatividade é o limite :)
