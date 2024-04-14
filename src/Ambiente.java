@@ -68,6 +68,19 @@ public class Ambiente  {
             texto += direcao + " ";
         }
         return texto;
-    }   
+    }
+
+    /**
+     * Retorna uma descrição longa do ambiente. A ideia é que, quando o ambiente
+     * evoluir e tiver mais coisas (como itens ou monstros) não seja necessário
+     * alterar a classe Jogo para informar o que existe no ambiente.
+     * 
+     * @return Uma descrição longa do ambiente, incluindo saídas.
+     */
+    public String getDescricaoLonga() {
+        String desc = "Voce esta " + getDescricao() + "\n";
+        desc += "Saidas: " + direcoesDeSaida();
+        return desc;
+    }
 
 }

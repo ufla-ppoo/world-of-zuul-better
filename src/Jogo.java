@@ -32,7 +32,7 @@ public class Jogo {
      * Cria todos os ambientes e liga as saidas deles
      */
     private void criarAmbientes() {
-        Ambiente reitoria, pavilhao, cantina, departamento, laboratorio;
+        Ambiente reitoria, pavilhao, cantina, departamento, laboratorio, porao;
       
         // cria os ambientes
         reitoria = new Ambiente("em um espaço aberto, gramado, em frente à reitoria");
@@ -40,16 +40,24 @@ public class Jogo {
         cantina = new Ambiente("na cantina da universidade");
         departamento = new Ambiente("no departamento de computacao");
         laboratorio = new Ambiente("na laboratorio de aulas de programacao");
+        porao = new Ambiente("no porão do laboratório de programação");
         
         // inicializa as saidas dos ambientes
         reitoria.ajustarSaida("leste", pavilhao);
         reitoria.ajustarSaida("sul", departamento);
         reitoria.ajustarSaida("oeste", cantina);
+        
         pavilhao.ajustarSaida("oeste", reitoria);
+        
         cantina.ajustarSaida("leste", reitoria);        
+        
         departamento.ajustarSaida("norte", reitoria);
         departamento.ajustarSaida("leste", laboratorio);
+        
         laboratorio.ajustarSaida("oeste", departamento);
+        laboratorio.ajustarSaida("baixo", porao);
+
+        porao.ajustarSaida("cima", laboratorio);
 
         ambienteAtual = reitoria;  // o jogo comeca em frente à reitoria
     }
@@ -104,6 +112,9 @@ public class Jogo {
         else if (palavraDeComando.equals("ir")) {
             irParaAmbiente(comando);
         }
+        else if (palavraDeComando.equals("observar")) {
+            observar(comando);
+        }
         else if (palavraDeComando.equals("sair")) {
             querSair = sair(comando);
         }
@@ -121,6 +132,21 @@ public class Jogo {
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
         System.out.println("   " + analisador.getComandosValidos());
+    }
+
+    /**
+     * Trata o comando "observar", exibindo as informações da localização atual do jogador
+     * 
+     * @param comando Objeto comando a ser tratado
+     */
+    private void observar(Comando comando) {
+        // se há segunda palavra, explica para o usuário que não pode...
+        if(comando.temSegundaPalavra()) {            
+            System.out.println("Não é possível observar detalhes de alguma coisa");
+            return;
+        }
+
+        imprimirLocalizacaoAtual();
     }
 
     /** 
@@ -153,9 +179,7 @@ public class Jogo {
      * Exibe as informações da localização atual para o jogador
      */
     private void imprimirLocalizacaoAtual() {
-    	System.out.println("Voce esta " + ambienteAtual.getDescricao());
-        
-        System.out.print("Saidas: " + ambienteAtual.direcoesDeSaida());
+    	System.out.println(ambienteAtual.getDescricaoLonga());
         System.out.println();
     }
 
