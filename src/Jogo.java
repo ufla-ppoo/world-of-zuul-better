@@ -36,10 +36,10 @@ public class Jogo {
       
         // cria os ambientes
         reitoria = new Ambiente("em um espaço aberto, gramado, em frente à reitoria");
-        pavilhao = new Ambiente("no pavilhao de aulas");
+        pavilhao = new Ambiente("no pavilhão de aulas");
         cantina = new Ambiente("na cantina da universidade");
-        departamento = new Ambiente("no departamento de computacao");
-        laboratorio = new Ambiente("na laboratorio de aulas de programacao");
+        departamento = new Ambiente("no departamento de computação");
+        laboratorio = new Ambiente("na laboratório de aulas de programação");
         porao = new Ambiente("no porão do laboratório de programação");
         
         // inicializa as saidas dos ambientes
@@ -85,8 +85,8 @@ public class Jogo {
     private void imprimirBoasVindas() {
         System.out.println();
         System.out.println("Bem-vindo ao World of Zuul!");
-        System.out.println("World of Zuul eh um novo jogo de aventura, incrivelmente chato.");
-        System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
+        System.out.println("World of Zuul é um novo jogo de aventura, incrivelmente chato.");
+        System.out.println("Digite 'ajuda' se você precisar de ajuda.");
         System.out.println();
         
         imprimirLocalizacaoAtual();
@@ -101,7 +101,7 @@ public class Jogo {
         boolean querSair = false;
 
         if(comando.ehDesconhecido()) {
-            System.out.println("Eu nao entendi o que voce disse...");
+            System.out.println("Eu não entendi o que voce disse...");
             return false;
         }
 
@@ -127,10 +127,10 @@ public class Jogo {
      * Aqui nós imprimimos algo bobo e enigmático e a lista de  palavras de comando
      */
     private void imprimirAjuda()  {
-        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
+        System.out.println("Você está perdido. Você está sozinho. Você caminha");
         System.out.println("pela universidade.");
         System.out.println();
-        System.out.println("Suas palavras de comando sao:");
+        System.out.println("Suas palavras de comando são:");
         System.out.println("   " + analisador.getComandosValidos());
     }
 

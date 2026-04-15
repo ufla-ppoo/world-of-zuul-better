@@ -32,12 +32,12 @@ public class PalavrasComando {
     /**
      * Retorna os comandos válidos do jogo
      * 
-     * @return Uma lista de strings que representam os comandos válidos do jogo
+     * @return Uma string contendo os comandos válidos do jogo
      */
-    public ArrayList<String> getComandosValidos() {
-        ArrayList<String> comandos = new ArrayList<>();
+    public String getComandosValidos() {
+        String comandos = "";
         for (String comando : comandosValidos) {
-            comandos.add(comando);
+            comandos += comando + " ";
         }
         return comandos;
     }

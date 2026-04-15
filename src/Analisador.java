@@ -70,9 +70,9 @@ public class Analisador  {
     /**
      * Retorna os comandos válidos do jogo
      * 
-     * @return Uma lista de strings que representam os comandos válidos do jogo
+     * @return Uma string contendo os comandos válidos do jogo
      */
-    public ArrayList<String> getComandosValidos() {
+    public String getComandosValidos() {
         return palavrasDeComando.getComandosValidos();
     }
 }

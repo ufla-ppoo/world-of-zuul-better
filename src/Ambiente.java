@@ -78,8 +78,8 @@ public class Ambiente  {
      * @return Uma descrição longa do ambiente, incluindo saídas.
      */
     public String getDescricaoLonga() {
-        String desc = "Voce esta " + getDescricao() + "\n";
-        desc += "Saidas: " + direcoesDeSaida();
+        String desc = "Você está " + getDescricao() + "\n";
+        desc += "Saídas: " + direcoesDeSaida();
         return desc;
     }
 
